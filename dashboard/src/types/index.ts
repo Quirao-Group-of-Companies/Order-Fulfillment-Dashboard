@@ -9,6 +9,7 @@ export interface PhaseTiming {
 export interface Customer {
   id: string;
   name: string;
+  type: string;
 }
 
 export interface Order {

@@ -66,7 +66,9 @@ def _query_sales_orders(field, ids):
 
 
 def _customer_payload(so):
-	return {"id": so.get("customer"), "name": so.get("customer_name")}
+	customer_type = frappe.get_cached_value("Customer", so.get("customer"), "customer_type")
+
+	return {"id": so.get("customer"), "name": so.get("customer_name"), "type": customer_type}
 
 
 def _chunked(values, size):
