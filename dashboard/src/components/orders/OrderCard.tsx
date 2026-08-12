@@ -44,7 +44,7 @@ export function OrderCard({ order, index = 0 }: OrderCardProps) {
       <div className="flex items-start justify-between gap-2 pl-1.5">
         <div className="min-w-0 flex-1">
           <p className="text-xs uppercase tracking-wider text-ink-faint">Order</p>
-          <span className="block truncate font-mono text-lg font-semibold text-ink-strong">
+          <span className="block font-mono text-lg font-semibold text-ink-strong">
             #{order.order_id}
           </span>
           <span className="block font-mono font-semibold text-sm text-ink-strong">
@@ -57,7 +57,7 @@ export function OrderCard({ order, index = 0 }: OrderCardProps) {
       <div className="flex-1 border-t border-glass-border pt-3 pl-1.5">
         <p className="mb-1 text-xs uppercase tracking-wider text-ink-faint">Customer</p>
         {order.customer?.name ? (
-          <p className="truncate font-medium text-ink" title={order.customer.name}>
+          <p className="font-medium text-ink" title={order.customer.name}>
             {order.customer.name}
           </p>
         ) : (
@@ -68,7 +68,7 @@ export function OrderCard({ order, index = 0 }: OrderCardProps) {
       <div className="flex items-center justify-between gap-2 border-t border-glass-border pt-3 pl-1.5">
         <div className="min-w-0">
           <p className="text-xs uppercase tracking-wider text-ink-faint">Created</p>
-          <p className="truncate font-mono text-sm text-ink">{formatDate(order.created_at)}</p>
+          <p className="font-mono text-sm text-ink">{formatDate(order.created_at)}</p>
         </div>
       </div>
     </GlassCard>
