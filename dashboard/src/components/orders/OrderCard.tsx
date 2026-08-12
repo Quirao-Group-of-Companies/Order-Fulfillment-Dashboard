@@ -92,7 +92,7 @@ export function OrderCard({ order, index = 0 }: OrderCardProps) {
            {customerName}
           </p>
         ) : (
-          <p className="text-sm italic ml-5 text-ink-muted">Customer Not Found in ERP</p>
+          <p className="text-sm italic ml-5 text-ink-muted text-red-100">Customer Not Found in ERP</p>
         )}
       </div>
     </GlassCard>
