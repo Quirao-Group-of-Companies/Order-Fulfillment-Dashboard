@@ -1,15 +1,17 @@
 import { cn } from '@/lib/utils';
-import { CSSProperties, ReactNode } from 'react';
+import { CSSProperties, ComponentPropsWithoutRef, forwardRef } from 'react';
 
-interface GlassCardProps {
-  children: ReactNode;
-  className?: string;
+type GlassCardProps = ComponentPropsWithoutRef<'div'> & {
   style?: CSSProperties;
-}
+};
 
-export function GlassCard({ children, className, style }: GlassCardProps) {
+export const GlassCard = forwardRef<HTMLDivElement, GlassCardProps>(function GlassCard(
+  { children, className, style, ...props },
+  ref
+) {
   return (
     <div
+      ref={ref}
       style={style}
       className={cn(
         'backdrop-blur-[var(--blur-glass)] bg-glass-bg-soft border-glass-border',
@@ -17,8 +19,9 @@ export function GlassCard({ children, className, style }: GlassCardProps) {
         'transition duration-200 ease-expo-out',
         className
       )}
+      {...props}
     >
       {children}
     </div>
   );
-}
+});

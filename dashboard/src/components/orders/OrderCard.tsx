@@ -2,7 +2,7 @@ import { GlassCard } from '@/components/ui/GlassCard';
 import { PhaseBadge } from '@/components/ui/PhaseBadge';
 import { formatDate, formatRelativeTime, cn, getPhaseAccent } from '@/lib/utils';
 import { Order } from '@/types';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 interface OrderCardProps {
   order: Order;
@@ -12,6 +12,8 @@ interface OrderCardProps {
 export function OrderCard({ order, index = 0 }: OrderCardProps) {
   const [relativeTime, setRelativeTime] = useState('');
   const [isNew, setIsNew] = useState(true);
+  const [open, setOpen] = useState(false);
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     const update = () => setRelativeTime(formatRelativeTime(order.created_at));
@@ -27,6 +29,13 @@ export function OrderCard({ order, index = 0 }: OrderCardProps) {
 
   const customerName = order.customer?.name;
   const customerType = order.customer?.type || 'Unknown';
+
+  const itemCount = order.items?.length ?? 0;
+
+  useEffect(() => {
+    if (!open) return;
+    closeButtonRef.current?.focus();
+  }, [open]);
 
   let customerIcon = null;
 
@@ -59,10 +68,20 @@ export function OrderCard({ order, index = 0 }: OrderCardProps) {
   return (
     <GlassCard
       style={{ animationDelay: `${Math.min(index, 12) * 40}ms` }}
+      tabIndex={0}
+      role="button"
+      onClick={() => setOpen(true)}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          setOpen(true);
+        }
+      }}
       className={cn(
         'animate-card-in relative flex flex-col gap-3 overflow-hidden p-4',
         'duration-200 ease-expo-out',
         'hover:pointer-fine:-translate-y-0.5 hover:border-glass-border-strong hover:bg-glass-bg',
+        'focus:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900',
         isNew && 'animate-pulse-subtle border-brand/30'
       )}
     >
@@ -80,9 +99,18 @@ export function OrderCard({ order, index = 0 }: OrderCardProps) {
           <span className="block text-xs text-ink-strong">
            {order.so_order_no && `ERP ${order.so_order_no}`}
           </span>
+          <div className="mt-1">
+            {order.company ? (
+              <p className="block text-xs text-ink-muted" title={order.company}>
+                {order.company}
+              </p>
+            ) : <p className="text-xs italic text-ink-muted text-red-100">Company Not Found in ERP</p>}
+          </div>
           <p className="block mt-2 text-xs text-ink-faint">{formatDate(order.created_at)}</p>
         </div>
-        <PhaseBadge phase={order.current_phase} size="sm" />
+        <div className="flex items-center gap-2">
+          <PhaseBadge phase={order.current_phase} size="sm" />
+        </div>
       </div>
 
       <div className="flex-1 border-t border-glass-border pt-3 pl-1.5">
@@ -95,6 +123,105 @@ export function OrderCard({ order, index = 0 }: OrderCardProps) {
           <p className="text-sm italic ml-5 text-ink-muted text-red-100">Customer Not Found in ERP</p>
         )}
       </div>
+      <div className="flex items-center gap-1 rounded mt-1 py-1 text-xs text-ink-muted">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="size-5" aria-hidden="true">
+          <path d="M1 1.75A.75.75 0 0 1 1.75 1h1.628a1.75 1.75 0 0 1 1.734 1.51L5.18 3a65.25 65.25 0 0 1 13.36 1.412.75.75 0 0 1 .58.875 48.645 48.645 0 0 1-1.618 6.2.75.75 0 0 1-.712.513H6a2.503 2.503 0 0 0-2.292 1.5H17.25a.75.75 0 0 1 0 1.5H2.76a.75.75 0 0 1-.748-.807 4.002 4.002 0 0 1 2.716-3.486L3.626 2.716a.25.25 0 0 0-.248-.216H1.75A.75.75 0 0 1 1 1.75ZM6 17.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0ZM15.5 19a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Z" />
+        </svg>
+        <span className="text-xs text-ink-strong" aria-live="polite">{itemCount} Items</span>
+      </div>
+
+      {/* Item details modal (accessible) */}
+      {open ? (
+        <div
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby={`order-items-${order.order_id}`}
+          tabIndex={-1}
+          onKeyDown={(e) => {
+            if (e.key === 'Escape') {
+              e.stopPropagation();
+              setOpen(false);
+            }
+          }}
+          className="absolute inset-0 z-50 flex items-center justify-center overflow-y-auto bg-slate-950/85 p-2 backdrop-blur-md"
+        >
+          <div
+            className="relative z-10 flex h-full w-full flex-col overflow-hidden rounded-2xl border border-white/10 bg-slate-950/95 shadow-2xl shadow-black/50 ring-1 ring-white/5"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center justify-between gap-3 border-b border-white/10 px-3 py-2">
+              <div className="min-w-0">
+                <h3 id={`order-items-${order.order_id}`} className="text-xs font-semibold tracking-wide text-white">
+                  ORDER ITEMS
+                </h3>
+              </div>
+              <button
+                ref={closeButtonRef}
+                type="button"
+                aria-label="Close order items dialog"
+                className="inline-flex h-7 w-7 flex-none items-center justify-center rounded-full border border-white/10 bg-white/5 text-white/75 transition-colors hover:bg-white/10 hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950"
+                onClick={() => setOpen(false)}
+              >
+                <svg aria-hidden="true" viewBox="0 0 20 20" fill="currentColor" className="size-3">
+                  <path d="M4.28 4.28a.75.75 0 0 1 1.06 0L10 8.94l4.66-4.66a.75.75 0 1 1 1.06 1.06L11.06 10l4.66 4.66a.75.75 0 1 1-1.06 1.06L10 11.06l-4.66 4.66a.75.75 0 1 1-1.06-1.06L8.94 10 4.28 5.34a.75.75 0 0 1 0-1.06Z" />
+                </svg>
+              </button>
+            </div>
+
+            <div className="min-h-0 flex-1 overflow-auto px-3 py-2">
+              <table className="min-w-[500px] w-full table-fixed text-left text-[11px] leading-tight">
+                <colgroup>
+                  <col className="w-[10%]" />
+                  <col className="w-[15%]" />
+                  <col className="w-[15%]" />
+                  <col className="w-[7%]" />
+                  <col className="w-[7%]" />
+                </colgroup>
+                <thead className="sticky top-0 z-10 bg-slate-950/95 backdrop-blur-sm">
+                  <tr className="text-[10px] uppercase tracking-[0.16em] text-white/50">
+                    <th className="py-1.5 pr-2 font-medium">ATUM SKU</th>
+                    <th className="py-1.5 pr-2 font-medium">Brand</th>
+                    <th className="py-1.5 pr-2 font-medium">Product</th>
+                    <th className="py-1.5 pr-2 font-medium">Qty</th>
+                    <th className="py-1.5 font-medium">UOM</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {(order.items ?? []).length === 0 ? (
+                    <tr>
+                      <td colSpan={5} className="py-6 text-center text-white/55">No items available</td>
+                    </tr>
+                  ) : (
+                    (order.items ?? []).map((item: any, i: number) => {
+                      const meta = (arr: any[] | undefined, key: string) => {
+                        if (!arr) return null;
+                        const m = arr.find((m: any) => (m.key && m.key.toLowerCase() === key.toLowerCase()) || (m.name && m.name.toLowerCase() === key.toLowerCase()));
+                        return m?.value ?? null;
+                      };
+
+                      const atumSku = item.atum_sku;
+                      const brand = item.brand;
+                      const name = item.name;
+                      const qty = item.quantity;
+                      const uom = item.uom;
+
+                      return (
+                        <tr key={i} className="border-t border-white/8 even:bg-white/[0.02]">
+                          <td className="py-1.5 pr-2 text-white/90">{atumSku ?? '—'}</td>
+                          <td className="py-1.5 pr-2 text-white/70">{brand ?? '—'}</td>
+                          <td className="py-1.5 pr-2 text-white/90">{name}</td>
+                          <td className="py-1.5 pr-2 text-white/90">{qty}</td>
+                          <td className="py-1.5 text-white/70">{uom ?? '—'}</td>
+                        </tr>
+                      );
+                    })
+                  )}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      ) : null}
     </GlassCard>
   );
 }
