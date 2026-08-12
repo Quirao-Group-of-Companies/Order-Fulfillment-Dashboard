@@ -22,7 +22,7 @@ const dotSizeClasses: Record<'sm' | 'md' | 'lg', string> = {
 export function PhaseBadge({ phase, className, size = 'md', showDot = true }: PhaseBadgeProps) {
   return (
     <span className={cn(
-      'inline-flex items-center gap-1.5 font-medium rounded-full border',
+      'absolute right-3 inline-flex items-center gap-1.5 font-medium rounded-full border',
       getPhaseColor(phase),
       sizeClasses[size],
       className
