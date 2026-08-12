@@ -48,7 +48,7 @@ export function OrderCard({ order, index = 0 }: OrderCardProps) {
             #{order.order_id}
           </span>
           <span className="block font-mono font-semibold text-sm text-ink-strong">
-            {order.so_order_no && `SO${order.so_order_no}`}
+            {order.so_order_no && `${order.so_order_no}`}
           </span>
         </div>
         <PhaseBadge phase={order.current_phase} size="sm" />
@@ -61,7 +61,7 @@ export function OrderCard({ order, index = 0 }: OrderCardProps) {
             {order.customer.name}
           </p>
         ) : (
-          <p className="text-sm italic text-ink-muted">Customer not found</p>
+          <p className="text-sm italic text-ink-muted">Not Found in ERP</p>
         )}
       </div>
 
