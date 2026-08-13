@@ -95,7 +95,8 @@ export function OrderCard({ order, index = 0 }: OrderCardProps) {
               <p className="block text-xs text-ink-muted" title={order.company}>
                 {order.company}
               </p>
-            ) : <p className="text-xs italic text-ink-muted text-red-100">Company Not Found in ERP</p>}
+             ) : null }
+            {/* // ) : <p className="text-xs italic text-ink-muted text-red-100">Company Not Found in ERP</p>} */}
           </div>
           <p className="block mt-2 text-xs text-ink-faint">{formatDate(order.created_at)}</p>
         </div>
@@ -105,14 +106,15 @@ export function OrderCard({ order, index = 0 }: OrderCardProps) {
       </div>
 
       <div className="flex-1 border-t border-glass-border pt-3 pl-1.5">
-        <span className="absolute left-4">{customerIcon}</span>
+        {customerName ? (<span className="absolute left-4">{customerIcon}</span>) : null}
         {customerName ? (
           <p className="text-sm italic text-ink-muted ml-5" title={customerName}>
            {customerName}
           </p>
-        ) : (
-          <p className="text-sm italic ml-5 text-ink-muted text-red-100">Customer Not Found in ERP</p>
-        )}
+        ) : ( null )}
+        {/* // ) : (
+        //   <p className="text-sm italic ml-5 text-ink-muted text-red-100">Customer Not Found in ERP</p>
+        // )} */}
       </div>
       <div className="flex items-center gap-1 rounded mt-1 py-1 text-xs text-ink-muted">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="size-5" aria-hidden="true">
