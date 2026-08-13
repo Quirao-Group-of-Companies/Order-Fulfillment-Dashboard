@@ -19,7 +19,7 @@ export function ErrorState({ message }: ErrorStateProps) {
         </svg>
       </div>
       <h3 className="mb-1 text-lg font-medium text-ink-strong">Unable to load orders</h3>
-      <p className="mb-5 max-w-md text-ink-muted">{message}</p>
+      <p className="mb-5 text-ink-muted">{message}</p>
       <div className="flex gap-2">
         <button
           onClick={fetchOrders}
