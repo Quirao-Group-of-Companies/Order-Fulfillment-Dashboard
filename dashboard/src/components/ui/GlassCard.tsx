@@ -1,17 +1,13 @@
 import { cn } from '@/lib/utils';
-import { CSSProperties, ComponentPropsWithoutRef, forwardRef } from 'react';
+import { CSSProperties, ComponentPropsWithoutRef } from 'react';
 
 type GlassCardProps = ComponentPropsWithoutRef<'div'> & {
   style?: CSSProperties;
 };
 
-export const GlassCard = forwardRef<HTMLDivElement, GlassCardProps>(function GlassCard(
-  { children, className, style, ...props },
-  ref
-) {
+export function GlassCard({ children, className, style, ...props } : GlassCardProps) {
   return (
     <div
-      ref={ref}
       style={style}
       className={cn(
         'backdrop-blur-[var(--blur-glass)] bg-glass-bg-soft border-glass-border',
@@ -24,4 +20,4 @@ export const GlassCard = forwardRef<HTMLDivElement, GlassCardProps>(function Gla
       {children}
     </div>
   );
-});
+};
