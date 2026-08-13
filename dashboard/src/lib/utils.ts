@@ -58,13 +58,13 @@ function phraseFallback(phase: string): string {
 
 export function getPhaseColor(phase: string): string {
   const classes: Record<string, string> = {
-    enqueueing: 'bg-phase-enqueueing/15 text-phase-enqueueing border-phase-enqueueing/30',
-    picking: 'bg-phase-picking/15 text-phase-picking border-phase-picking/30',
-    sorting: 'bg-phase-sorting/15 text-phase-sorting border-phase-sorting/30',
-    checking: 'bg-phase-checking/15 text-phase-checking border-phase-checking/30',
-    loading: 'bg-phase-loading/15 text-phase-loading border-phase-loading/30',
+    enqueueing: 'bg-phase-enqueueing/15 border-phase-enqueueing/30',
+    picking: 'bg-phase-picking/15 border-phase-picking/30',
+    sorting: 'bg-phase-sorting/15 border-phase-sorting/30',
+    checking: 'bg-phase-checking/15 border-phase-checking/30',
+    loading: 'bg-phase-loading/15 border-phase-loading/30',
   };
-  return classes[phase] || 'bg-phase-unknown/15 text-phase-unknown border-phase-unknown/30';
+  return classes[phase] || 'bg-phase-unknown/15 border-phase-unknown/30';
 }
 
 export function getPhaseAccent(phase: string): string {

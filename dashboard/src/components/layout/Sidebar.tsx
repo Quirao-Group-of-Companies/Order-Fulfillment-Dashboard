@@ -83,7 +83,6 @@ export function Sidebar({ className }: SidebarProps) {
               <h2 className="truncate text-base font-semibold leading-tight text-ink-strong">
                 Order Fulfillment
               </h2>
-              <p className="text-xs text-ink-muted">Dashboard</p>
             </div>
           </div>
         </div>
@@ -131,7 +130,7 @@ export function Sidebar({ className }: SidebarProps) {
         </div>
 
         <div className="mb-2 px-3">
-          <p className="text-xs text-ink-faint uppercase tracking-wider">Phases</p>
+          <p className="text-xs text-ink-muted uppercase tracking-wider">Phases</p>
         </div>
 
         <div className="space-y-1">

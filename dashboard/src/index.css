@@ -60,11 +60,11 @@
   --color-danger-soft: rgba(248, 113, 113, 0.1);
 
   /* Phase accents */
-  --color-phase-enqueueing: #38bdf8;
-  --color-phase-picking: #fbbf24;
-  --color-phase-sorting: #c084fc;
-  --color-phase-checking: #34d399;
-  --color-phase-loading: #818cf8;
+  --color-phase-enqueueing: #0a285a;
+  --color-phase-picking: #667085;
+  --color-phase-sorting: #f79009;
+  --color-phase-checking: #2e90fa;
+  --color-phase-loading: #17b26a;
   --color-phase-unknown: #94a3b8;
 
   /* Background glows */
