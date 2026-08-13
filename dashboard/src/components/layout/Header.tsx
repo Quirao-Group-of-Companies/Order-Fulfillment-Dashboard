@@ -67,7 +67,7 @@ export function Header() {
           <h1 className="truncate text-xl font-semibold text-ink-strong sm:text-2xl">
             Order Fulfillment Dashboard
           </h1>
-          <p className="text-sm text-ink-muted">Real-time monitoring of the order fulfillment process from the warehouse</p>
+          <p className="text-sm text-ink-muted">Real-time monitoring of the order fulfillment process. Data is fetched from WooCommerce and ERP.</p>
         </div>
       </div>
 
