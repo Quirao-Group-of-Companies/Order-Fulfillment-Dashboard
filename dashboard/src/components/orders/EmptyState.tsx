@@ -1,5 +1,5 @@
 import { GlassPanel } from '@/components/ui/GlassPanel';
-import { getPhaseLabel } from '@/lib/utils';
+import { getPhaseLabel, getPhaseAccent } from '@/lib/utils';
 import { useOrderFulfillmentStore } from '@/store/orderFulfillmentStore';
 
 interface EmptyStateProps {
@@ -20,10 +20,7 @@ export function EmptyState({ phase }: EmptyStateProps) {
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
         </svg>
       </div>
-      <h3 className="mb-1 text-lg font-medium text-ink-strong">No orders found</h3>
-      <p className="max-w-sm text-ink-muted">
-        No orders are currently in <span className="font-medium text-ink">{phaseLabel}</span>.
-      </p>
+      <h3 className="mb-1 text-lg font-medium text-ink">No orders found in <span style={{ color: getPhaseAccent(phase) }}>{phaseLabel}</span> Phase</h3>
       <button
         onClick={fetchOrders}
         className="mt-6 flex items-center gap-2 rounded-lg border border-glass-border bg-glass-bg px-4 py-2 text-sm font-medium text-ink transition-all duration-150 ease-expo-out hover:bg-glass-bg-strong hover:text-ink-strong active:scale-[0.97]"

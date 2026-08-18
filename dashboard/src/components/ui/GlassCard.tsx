@@ -1,13 +1,11 @@
 import { cn } from '@/lib/utils';
-import { CSSProperties, ReactNode } from 'react';
+import { CSSProperties, ComponentPropsWithoutRef } from 'react';
 
-interface GlassCardProps {
-  children: ReactNode;
-  className?: string;
+type GlassCardProps = ComponentPropsWithoutRef<'div'> & {
   style?: CSSProperties;
-}
+};
 
-export function GlassCard({ children, className, style }: GlassCardProps) {
+export function GlassCard({ children, className, style, ...props } : GlassCardProps) {
   return (
     <div
       style={style}
@@ -17,8 +15,9 @@ export function GlassCard({ children, className, style }: GlassCardProps) {
         'transition duration-200 ease-expo-out',
         className
       )}
+      {...props}
     >
       {children}
     </div>
   );
-}
+};
