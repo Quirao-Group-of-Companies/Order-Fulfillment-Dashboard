@@ -2,7 +2,7 @@
 
 Central registry of all UI components used by the Order Fulfillment Dashboard.
 
-**Last Updated:** 2026-08-11
+**Last Updated:** 2026-09-17
 
 ---
 
@@ -49,6 +49,7 @@ Central registry of all UI components used by the Order Fulfillment Dashboard.
 | SidebarDrawer    | Done   | Mobile slide-over, lg:hidden, inert    |
 | AutoRefreshSwitch| Done   | role="switch" toggle in header         |
 | FullscreenToggle | Done   | Fullscreen API, header icon button     |
+| HeroUIButton     | Done   | HeroUI v3 smoke test in header (`data-smoke-test="heroui"`) |
 
 ## Design Tokens
 
@@ -72,3 +73,4 @@ Tokens implemented in `src/index.css` via `@theme` (Tailwind v4).
 | 2026-08-10 | Registry initialized with planned components |
 | 2026-08-10 | Phase 6 complete: all components implemented |
 | 2026-08-11 | Phase 11 complete: tokenized design system, sidebar/card/phase polish, mobile drawer, auto-refresh switch + fullscreen toggle |
+| 2026-09-17 | Added HeroUI v3 (`@heroui/styles` imported after Tailwind); HeroUI Button smoke test in header |

@@ -1,5 +1,8 @@
 import frappe
 import requests
+from datetime import datetime, timedelta
+
+
 
 REQUEST_TIMEOUT = 10
 
@@ -39,8 +42,14 @@ def get_settings():
 	return settings
 
 
-def get_orders():
-	response_data = _request_orders()
+def get_orders(start_date=None):
+	end_date = datetime.now()
+ 
+	if not start_date:
+		start_date = end_date - timedelta(days=60)
+    
+	query = {"since": start_date, "per_page": 1000}
+	response_data = _request_orders(query=query)
 	return _extract_order_list(response_data)
 
 

@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import "@heroui/styles";
 
 /* Glassmorphism Scrollbar */
 ::-webkit-scrollbar {
@@ -61,6 +62,7 @@
 
   /* Phase accents */
   --color-phase-enqueueing: #0a285a;
+  --color-phase-cancelled: #A82020;
   --color-phase-picking: #667085;
   --color-phase-sorting: #f79009;
   --color-phase-checking: #2e90fa;

@@ -8,7 +8,7 @@
 
 **Progress:** `77%`
 
-**Last Updated:** 2026-08-11
+**Last Updated:** 2026-09-17
 
 ---
 
@@ -694,7 +694,8 @@ No notes yet.
 | Desktop card grid                    | 🟢 Confirmed | 6 columns                    |
 | Auto-refresh                         | 🟢 Planned   | 30 seconds                   |
 | ERPNext Customer lookup              | ✅ Confirmed | Via Sales Order custom fields (woo_job_order_id / woo_job_order_no) |
-| UI library                           | 🟡 Pending   | Tailwind + hand-built shadcn-style components |
+| UI library                           | 🟢 Confirmed | HeroUI v3 (3.2.5) added; Tailwind + hand-built shadcn-style components retained |
+| React version                        | ✅ Confirmed | 19.3.0 (required by HeroUI v3; frappe-react-sdk 1.17.1 supports >=17.x) |
 
 ---
 
@@ -865,6 +866,35 @@ https://cms-staging.buildmaster.ph/wp-json/qgc-erp/v1/order-fulfillment?order_id
 
 ---
 
+## 2026-09-17 — Date filter refresh fix
+
+### Completed
+
+* [x] `setStartDate` now triggers `fetchOrders()` — changing the Start Date immediately refetches from WooCommerce via `start_date` instead of waiting for a manual/auto refresh
+
+---
+
+## 2026-09-17 — HeroUI v3 + React 19
+
+### Completed
+
+* [x] Verified `frappe-react-sdk@1.17.1` is React 19 compatible — peer dep `react >=17.x`, no `react-dom`/legacy API usage in bundle; `swr@2.5.0` supports React 19
+* [x] Upgraded React + React DOM 18.3.1 → 19.3.0 (`@types/*` to 19.3.0)
+* [x] Installed HeroUI v3: `@heroui/react@3.2.5` + `@heroui/styles@3.2.5`
+* [x] Installed HeroUI peer deps explicitly (yarn v1 doesn't auto-install peers): `react-aria`, `react-aria-components`, `@react-aria/i18n/ssr/utils`
+* [x] Added `@import "@heroui/styles";` after `@import "tailwindcss";` in `src/index.css`
+* [x] Added HeroUI `<Button>` smoke test in `Header` (`data-smoke-test="heroui"`)
+* [x] Updated `library-docs.md`, `ui-registry.md`
+* [x] `yarn build` passes; HeroUI styles bundled (CSS includes `button--primary`)
+* [ ] KNOWN PRE-EXISTING (unrelated to this change): `tsc -b` reports 4 errors
+  (OrderCard unused `relativeTime`/`meta`; `test/fixtures.ts` missing `type` +
+  `cancelled` for the staged cancelled-phase work). `yarn test` has 7 failures
+  from the same staged work (cancelled phase, `start_date`, grid cols, copy).
+  None are caused by React 19 or HeroUI.
+* [ ] TODO: decide whether to keep or remove the HeroUI smoke-test Button
+
+---
+
 # Change Log
 
 | Date       | Change                            |
@@ -883,6 +913,7 @@ https://cms-staging.buildmaster.ph/wp-json/qgc-erp/v1/order-fulfillment?order_id
 | 2026-08-10 | Phase 5 complete: ERPNext customer lookup via Sales Order custom fields, 12 tests |
 | 2026-08-10 | Phase 4 complete: whitelisted backend API, normalization, error contract, 19 tests |
 | 2026-08-11 | Phase 11 complete: full design-token system, sidebar/card/status polish, mobile drawer, full-screen + auto-refresh switch, entrance stagger |
+| 2026-09-17 | HeroUI v3 installed (3.2.5) + React upgraded 18.3.1 → 19.3.0; frappe-react-sdk React 19 compatibility verified |
 
 ---
 

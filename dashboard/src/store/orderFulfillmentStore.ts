@@ -4,6 +4,7 @@ import { Order, Phase, ApiResponse } from '../types';
 interface StoreState {
   orders: Order[];
   selectedPhase: Phase;
+  startDate: string | null,
   loading: boolean;
   error: string | null;
   lastUpdated: Date | null;
@@ -12,6 +13,7 @@ interface StoreState {
 
   fetchOrders: () => Promise<void>;
   setSelectedPhase: (phase: Phase) => void;
+  setStartDate: (date: string | null) => void;
   setAutoRefresh: (enabled: boolean) => void;
   setSidebarOpen: (open: boolean) => void;
   clearError: () => void;
@@ -31,6 +33,7 @@ const ERROR_MESSAGES: Record<string, string> = {
 export const useOrderFulfillmentStore = create<StoreState>((set, get) => ({
   orders: [],
   selectedPhase: 'all',
+  startDate: null,
   loading: false,
   error: null,
   lastUpdated: null,
@@ -39,6 +42,11 @@ export const useOrderFulfillmentStore = create<StoreState>((set, get) => ({
 
   setSelectedPhase: (phase) => set({ selectedPhase: phase }),
 
+  setStartDate: (date) => {
+    set({ startDate: date });
+    get().fetchOrders();
+  },
+
   setAutoRefresh: (enabled) => set({ autoRefresh: enabled }),
 
   setSidebarOpen: (open) => set({ sidebarOpen: open }),
@@ -46,20 +54,27 @@ export const useOrderFulfillmentStore = create<StoreState>((set, get) => ({
   clearError: () => set({ error: null }),
 
   fetchOrders: async () => {
-    const { loading } = get();
+    const { loading, startDate } = get();
     if (loading) return;
     
     set({ loading: true, error: null });
     
     try {
       const csrfToken = (window as any).csrf_token || '';
-      const response = await fetch('/api/method/order_fulfillment_dashboard.api.order_fulfillment.get_orders', {
-        headers: { 
-          'Accept': 'application/json', 
-          'X-Frappe-CSRF-Token': csrfToken 
-        },
-        credentials: 'include',
-      });
+      const params = new URLSearchParams({
+        start_date: startDate || '',
+    });
+    
+    const response = await fetch(
+        `/api/method/order_fulfillment_dashboard.api.order_fulfillment.get_orders?${params}`,
+        {
+            headers: {
+                'Accept': 'application/json',
+                'X-Frappe-CSRF-Token': csrfToken,
+            },
+            credentials: 'include',
+        }
+    );
       const data = await response.json();
       const payload: ApiResponse = data.message ?? data;
       
@@ -68,7 +83,11 @@ export const useOrderFulfillmentStore = create<StoreState>((set, get) => ({
       }
       
       set({ 
-        orders: payload.orders, 
+        orders: [...payload.orders].sort((a, b) => {
+          if (a.current_phase === 'cancelled') return 1;
+          if (b.current_phase === 'cancelled') return -1;
+          return 0;
+        }),
         loading: false, 
         lastUpdated: new Date() 
       });

@@ -70,6 +70,7 @@ export function getPhaseColor(phase: string): string {
 export function getPhaseAccent(phase: string): string {
   const vars: Record<string, string> = {
     enqueueing: 'var(--color-phase-enqueueing)',
+    cancelled: 'var(--color-phase-cancelled)',
     picking: 'var(--color-phase-picking)',
     sorting: 'var(--color-phase-sorting)',
     checking: 'var(--color-phase-checking)',

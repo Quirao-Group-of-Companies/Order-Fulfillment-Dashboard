@@ -8,18 +8,19 @@ PHASE_FIELDS = ("enqueueing", "picking", "sorting", "checking", "loading")
 
 
 @frappe.whitelist(allow_guest=True)
-def get_orders():
+def get_orders(start_date=None):
 	_check_permission()
 
 	try:
-		orders = woo_client.get_orders()
+		print('\n\n\n\nstart_date' , start_date)
+		orders = woo_client.get_orders(start_date)
 	except Exception as error:
 		return _handle_error(error)
 
 	customer_map = customer_lookup.resolve_customers([order.get("order_id") for order in orders])
 
 	normalized_orders = []
-	print("\n\n\n\n\n", orders)
+	# print("\n\n\n\n\n", orders)
 	for order in orders:
 		# get sales order no
 		cur_order_id = cstr(order.get("order_id"))

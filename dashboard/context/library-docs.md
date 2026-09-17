@@ -1,7 +1,7 @@
 # Library Docs — Project-Specific Rules
 
 Project-specific usage rules for third party libraries.
-**Last Updated:** 2026-08-10
+**Last Updated:** 2026-09-17
 
 ---
 
@@ -19,11 +19,29 @@ Before adding ANY third party library:
 
 | Library         | Version       | Status      | Notes                                   |
 | --------------- | ------------- | ----------- | --------------------------------------- |
-| React           | ^19.2.8       | Installed   | Frontend runtime                        |
+| React           | ^19.3.0       | Installed   | Frontend runtime (upgraded for HeroUI)  |
+| React DOM       | ^19.3.0       | Installed   | Frontend runtime                        |
 | Vite            | ^8.2.0        | Installed   | Build tool, dev server on :8080         |
-| frappe-react-sdk| ^1.3.11       | Installed   | Frappe backend communication            |
-| Tailwind CSS    | —             | Not yet     | To be added for styling (Phase 6+)      |
-| shadcn/ui       | —             | Not yet     | Design language only — see rules below  |
+| frappe-react-sdk| ^1.3.11→1.17.1| Installed   | Frappe backend communication            |
+| Tailwind CSS    | ^4.3.3        | Installed   | Styling (design tokens)                 |
+| HeroUI v3       | 3.2.5         | Installed   | Component library (`@heroui/*`)         |
+| zustand         | ^5.0.14       | Installed   | Client state                            |
+
+---
+
+## HeroUI v3
+
+- Packages: `@heroui/react` + `@heroui/styles`, pinned to 3.2.5.
+- **Requires React 19+** (peer). React was upgraded from 18.3.1 → 19.3.0 to satisfy this.
+- **Requires Tailwind CSS v4**; `@heroui/styles` must be imported **after** `tailwindcss`
+  in the CSS entry (`src/index.css`). Import order matters.
+- **No Provider wrapper needed** in v3 — components render standalone.
+- Peer deps installed explicitly: `react-aria`, `react-aria-components`,
+  `@react-aria/i18n`, `@react-aria/ssr`, `@react-aria/utils` (yarn v1 does not
+  auto-install peers).
+- Smoke test: `Button` rendered in `Header` (`data-smoke-test="heroui"`).
+- Known benign warning: `@react-types/color` → optional peer
+  `@react-spectrum/provider` unmet (only used by color components, unused here).
 
 ---
 
@@ -48,6 +66,7 @@ Before adding ANY third party library:
 
 ## Change Log
 
-| Date       | Change                        |
-| ---------- | ----------------------------- |
-| 2026-08-10 | Initialized library docs      |
+| Date       | Change                                 |
+| ---------- | -------------------------------------- |
+| 2026-08-10 | Initialized library docs               |
+| 2026-09-17 | React upgraded to 19.3.0; added HeroUI v3 (3.2.5) + MCP-verified quick-start setup |

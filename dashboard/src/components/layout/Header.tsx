@@ -2,7 +2,9 @@ import { useOrderFulfillmentStore } from '@/store/orderFulfillmentStore';
 import { GlassPanel } from '@/components/ui/GlassPanel';
 import { formatTime } from '@/lib/utils';
 import { cn } from '@/lib/utils';
+import { Button } from '@heroui/react';
 import { useState } from 'react';
+import { Basic as DatePicker } from '../ui/DatePickerControlled';
 
 function MenuIcon() {
   return (
@@ -35,7 +37,7 @@ const iconButton = cn(
 );
 
 export function Header() {
-  const { loading, lastUpdated, fetchOrders, autoRefresh, setAutoRefresh, setSidebarOpen } =
+  const { loading, lastUpdated, fetchOrders, autoRefresh, setAutoRefresh, setSidebarOpen, setStartDate } =
     useOrderFulfillmentStore();
   const [isFullscreen, setIsFullscreen] = useState(false);
 
@@ -72,6 +74,10 @@ export function Header() {
       </div>
 
       <div className="flex flex-wrap items-center gap-3">
+        <DatePicker />
+
+        <Button className="bg-brand hover:bg-brand-hover" onClick={() => setStartDate(null)}>Clear</Button>
+
         <GlassPanel variant="secondary" className="flex items-center gap-2 px-3 py-1.5">
           <span className="text-xs text-ink-muted">Last updated</span>
           <span className="text-xs font-mono tabular-nums text-ink-strong">

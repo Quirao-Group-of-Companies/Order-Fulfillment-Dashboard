@@ -3,7 +3,7 @@ import { GlassPanel } from '@/components/ui/GlassPanel';
 import { cn, getPhaseAccent } from '@/lib/utils';
 
 const PHASES: Array<{
-  value: 'all' | 'enqueueing' | 'picking' | 'sorting' | 'checking' | 'loading';
+  value: 'all' | 'cancelled' | 'enqueueing' | 'picking' | 'sorting' | 'checking' | 'loading';
   label: string;
 }> = [
   { value: 'all', label: 'All Orders' },
@@ -12,6 +12,7 @@ const PHASES: Array<{
   { value: 'sorting', label: 'Sorting' },
   { value: 'checking', label: 'Checking' },
   { value: 'loading', label: 'Loading' },
+  { value: 'cancelled', label: 'Cancelled' },
 ];
 
 const PHASE_ICONS: Record<string, React.ReactNode> = {

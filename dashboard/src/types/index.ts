@@ -1,4 +1,4 @@
-export type Phase = 'enqueueing' | 'picking' | 'sorting' | 'checking' | 'loading' | 'all';
+export type Phase = 'enqueueing' | 'picking' | 'sorting' | 'checking' | 'loading' | 'all' | 'cancelled';
 
 export interface PhaseTiming {
   start: string | null;
