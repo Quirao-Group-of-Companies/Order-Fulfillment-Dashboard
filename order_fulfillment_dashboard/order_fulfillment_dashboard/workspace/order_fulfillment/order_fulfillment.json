@@ -1,0 +1,37 @@
+{
+ "charts": [],
+ "content": "[{\"id\":\"CbpKsi4G5P\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Order Fulfillment</span>\",\"col\":12}},{\"id\":\"v8nP7b4Shn\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Open Dashboard\",\"col\":3}}]",
+ "creation": "2026-09-17 14:50:20.508448",
+ "custom_blocks": [],
+ "docstatus": 0,
+ "doctype": "Workspace",
+ "for_user": "",
+ "hide_custom": 0,
+ "icon": "dashboard-list",
+ "idx": 0,
+ "indicator_color": "blue",
+ "is_hidden": 0,
+ "label": "Order Fulfillment",
+ "links": [],
+ "modified": "2026-09-17 14:58:32.094563",
+ "modified_by": "Administrator",
+ "module": "Order Fulfillment Dashboard",
+ "name": "Order Fulfillment",
+ "number_cards": [],
+ "owner": "Administrator",
+ "parent_page": "",
+ "public": 1,
+ "quick_lists": [],
+ "roles": [],
+ "sequence_id": 40.0,
+ "shortcuts": [
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "Open Dashboard",
+   "type": "URL",
+   "url": "/order_fulfillment"
+  }
+ ],
+ "title": "Order Fulfillment"
+}
