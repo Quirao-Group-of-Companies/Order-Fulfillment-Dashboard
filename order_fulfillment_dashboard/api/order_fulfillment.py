@@ -12,7 +12,6 @@ def get_orders(start_date=None):
 	_check_permission()
 
 	try:
-		print('\n\n\n\nstart_date' , start_date)
 		orders = woo_client.get_orders(start_date)
 	except Exception as error:
 		return _handle_error(error)
@@ -27,8 +26,17 @@ def get_orders(start_date=None):
 		so_order_no = (
 			frappe.db.get_value("Sales Order", {"custom_woo_job_order_no": cur_order_id}, "name") or ""
 		)
+  
+		created_at, docstatus = frappe.db.get_value(
+			"Sales Order",
+			{"custom_woo_job_order_no": cur_order_id},
+			["transaction_date", "docstatus"]
+		) or (None, None)
+  
+		if docstatus == 2:
+			order["current_phase"] = "cancelled"
 
-		normalized = _normalize_order(order)
+		normalized = _normalize_order(order, created_at=created_at)
 		normalized["customer"] = customer_map.get(cstr(order.get("order_id")))
 		normalized["so_order_no"] = so_order_no
 		# attach company (sales order's company) when we have a linked Sales Order
@@ -112,12 +120,12 @@ def _handle_error(error):
 	return _error("INTERNAL_ERROR", _("An unexpected error occurred. Please try again later."))
 
 
-def _normalize_order(order):
+def _normalize_order(order, created_at=None):
 	return {
 		"id": order.get("id"),
 		"order_id": order.get("order_id"),
 		"current_phase": order.get("current_phase"),
-		"created_at": order.get("created_at"),
+		"created_at": created_at or order.get("created_at"),
 		# include raw line items from WooCommerce so UI can display item details
 		"items": order.get("line_items", []),
 		"customer": None,
