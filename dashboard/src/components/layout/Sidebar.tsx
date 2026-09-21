@@ -3,10 +3,11 @@ import { GlassPanel } from '@/components/ui/GlassPanel';
 import { cn, getPhaseAccent } from '@/lib/utils';
 
 const PHASES: Array<{
-  value: 'all' | 'cancelled' | 'enqueueing' | 'picking' | 'sorting' | 'checking' | 'loading';
+  value: 'all' | 'completed' | 'cancelled' | 'enqueueing' | 'picking' | 'sorting' | 'checking' | 'loading';
   label: string;
 }> = [
   { value: 'all', label: 'All Orders' },
+  { value: 'completed', label: 'Completed' },
   { value: 'enqueueing', label: 'Enqueue' },
   { value: 'picking', label: 'Picking' },
   { value: 'sorting', label: 'Sorting' },

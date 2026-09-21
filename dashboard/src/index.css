@@ -62,11 +62,12 @@
 
   /* Phase accents */
   --color-phase-enqueueing: #0a285a;
+  --color-phase-completed: #06FF00;
   --color-phase-cancelled: #A82020;
   --color-phase-picking: #667085;
   --color-phase-sorting: #f79009;
   --color-phase-checking: #2e90fa;
-  --color-phase-loading: #17b26a;
+  --color-phase-loading: #064635;
   --color-phase-unknown: #94a3b8;
 
   /* Background glows */
