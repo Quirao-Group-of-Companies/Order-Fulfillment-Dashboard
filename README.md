@@ -12,6 +12,15 @@ bench get-app $URL_OF_THIS_REPO --branch develop
 bench install-app order_fulfillment_dashboard
 ```
 
+### Access control
+
+The dashboard page and its API require a logged-in user with one of these roles:
+
+- `Fulfillment User`
+- `System Manager`
+
+`Administrator` always has access. Guests are redirected to `/login?redirect-to=/order_fulfillment`, and logged-in users without an allowed role receive a 403 response.
+
 ### Contributing
 
 This app uses `pre-commit` for code formatting and linting. Please [install pre-commit](https://pre-commit.com/#installation) and enable it for this repository:

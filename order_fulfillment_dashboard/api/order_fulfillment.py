@@ -2,14 +2,15 @@ import frappe
 from frappe import _
 from frappe.utils import cstr
 
+from order_fulfillment_dashboard.permissions import check_api_access
 from order_fulfillment_dashboard.services.order_fulfillment import customer_lookup, woo_client
 
 PHASE_FIELDS = ("enqueueing", "picking", "sorting", "checking", "loading")
 
 
-@frappe.whitelist(allow_guest=True)
+@frappe.whitelist()
 def get_orders(start_date=None):
-	# _check_permission()
+	check_api_access()
 
 	try:
 		orders = woo_client.get_orders(start_date)
@@ -26,13 +27,13 @@ def get_orders(start_date=None):
 		so_order_no = (
 			frappe.db.get_value("Sales Order", {"custom_woo_job_order_no": cur_order_id}, "name") or ""
 		)
-  
+
 		created_at, docstatus = frappe.db.get_value(
 			"Sales Order",
 			{"custom_woo_job_order_no": cur_order_id},
 			["transaction_date", "docstatus"]
 		) or (None, None)
-  
+
 		if docstatus == 2:
 			order["current_phase"] = "cancelled"
 
@@ -61,9 +62,9 @@ def get_orders(start_date=None):
 	}
 
 
-@frappe.whitelist(allow_guest=True)
+@frappe.whitelist()
 def get_order(order_id):
-	_check_permission()
+	check_api_access()
 
 	if not order_id:
 		return _error("INVALID_REQUEST", _("An order ID is required."))
@@ -78,13 +79,6 @@ def get_order(order_id):
 		normalized["customer"] = customer_lookup.resolve_customer(order_id)
 
 	return {"success": True, "order": normalized}
-
-
-def _check_permission():
-	if frappe.session.user == "Guest":
-		frappe.throw(
-			_("Authentication is required to access order fulfillment data."), frappe.PermissionError
-		)
 
 
 def _handle_error(error):

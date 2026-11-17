@@ -1,10 +1,14 @@
 import frappe
 from frappe.utils import get_system_timezone
 
+from order_fulfillment_dashboard.permissions import require_dashboard_access
+
 no_cache = 1
 
 
 def get_context():
+	require_dashboard_access()
+
 	csrf_token = frappe.sessions.get_csrf_token()
 	context = frappe._dict()
 	context.boot = get_boot()

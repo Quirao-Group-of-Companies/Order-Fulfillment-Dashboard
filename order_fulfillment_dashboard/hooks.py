@@ -11,15 +11,15 @@ app_license = "mit"
 # required_apps = []
 
 # Each item in the list will be shown as an app in the apps page
-# add_to_apps_screen = [
-# 	{
-# 		"name": "order_fulfillment_dashboard",
-# 		"logo": "/assets/order_fulfillment_dashboard/logo.png",
-# 		"title": "Order Fulfillment Dashboard",
-# 		"route": "/order_fulfillment_dashboard",
-# 		"has_permission": "order_fulfillment_dashboard.api.permission.has_app_permission"
-# 	}
-# ]
+add_to_apps_screen = [
+	{
+		"name": "order_fulfillment_dashboard",
+		"logo": "/assets/order_fulfillment_dashboard/order_fulfillment/qgc_logo.png",
+		"title": "Order Fulfillment Dashboard",
+		"route": "/order_fulfillment",
+		"has_permission": "order_fulfillment_dashboard.permissions.has_app_permission",
+	}
+]
 
 # Includes in <head>
 # ------------------
@@ -246,6 +246,3 @@ app_license = "mit"
 # ------------
 # List of apps whose translatable strings should be excluded from this app's translations.
 # ignore_translatable_strings_from = []
-
-
-website_route_rules = [{'from_route': '/dashboard/<path:app_path>', 'to_route': 'dashboard'},]

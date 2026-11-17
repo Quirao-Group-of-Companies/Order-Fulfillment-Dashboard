@@ -3,6 +3,7 @@ from unittest.mock import patch
 
 import frappe
 
+from order_fulfillment_dashboard import permissions
 from order_fulfillment_dashboard.api import order_fulfillment
 from order_fulfillment_dashboard.services.order_fulfillment import customer_lookup, woo_client
 
@@ -267,6 +268,32 @@ class TestPermission(unittest.TestCase):
 		with patch.object(frappe.local, "session", frappe._dict(user="Guest")):
 			with self.assertRaises(frappe.PermissionError):
 				order_fulfillment.get_order(47375)
+
+	def test_user_without_allowed_role_rejected(self):
+		with patch.object(frappe.local, "session", frappe._dict(user="employee@example.com")):
+			with patch.object(permissions.frappe, "get_roles", return_value=["Employee"]):
+				with self.assertRaises(frappe.PermissionError):
+					order_fulfillment.get_orders()
+
+	def test_fulfillment_user_allowed(self):
+		with patch.object(
+			frappe.local, "session", frappe._dict(user="fulfillment@example.com")
+		):
+			with patch.object(
+				permissions.frappe, "get_roles", return_value=["Fulfillment User"]
+			):
+				with patch.object(woo_client, "get_orders", return_value=[]):
+					result = order_fulfillment.get_orders()
+
+		self.assertTrue(result["success"])
+
+	def test_system_manager_allowed(self):
+		with patch.object(frappe.local, "session", frappe._dict(user="manager@example.com")):
+			with patch.object(permissions.frappe, "get_roles", return_value=["System Manager"]):
+				with patch.object(woo_client, "get_orders", return_value=[]):
+					result = order_fulfillment.get_orders()
+
+		self.assertTrue(result["success"])
 
 
 if __name__ == "__main__":
